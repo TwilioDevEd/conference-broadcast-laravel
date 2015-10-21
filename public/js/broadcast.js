@@ -6,7 +6,7 @@ $(function() {
 
   getRecordings = function(callback) {
     return $.ajax({
-      url: "/recording/index",
+      url: "/recordings",
       dataType: "json",
       error: function(jqXHR, textStatus, errorThrown) {
         return $('.recording-status').text(textStatus);

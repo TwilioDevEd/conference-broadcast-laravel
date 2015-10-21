@@ -29,3 +29,13 @@ Route::get(
     '/conference/connect',
     ['uses' => 'ConferenceController@showConnect', 'as' => 'conference-connect']
 );
+
+Route::get(
+    '/broadcast',
+    ['uses' => 'BroadcastController@index', 'as' => 'broadcast-index']
+);
+
+Route::get(
+    '/recordings',
+    ['uses' => 'RecordingController@index', 'as' => 'recording-index']
+);

@@ -140,7 +140,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\TwilioRestClientProvider::class,
     ],
 
     /*
