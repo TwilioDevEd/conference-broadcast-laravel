@@ -1,0 +1,11 @@
+language: php
+php:
+- 5.6
+- 5.5
+install:
+- composer install
+env:
+  global:
+  - TWILIO_AUTH_TOKEN=token_here
+  - TWILIO_ACCOUNT_SID=sid_here
+  - TWILIO_NUMBER=number_here
