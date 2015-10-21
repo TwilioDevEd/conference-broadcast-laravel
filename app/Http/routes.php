@@ -11,6 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get(
+    '/', ['as' => 'home', function () {
+        return response()->view('index');
+    }]
+);
+
+Route::get(
+    '/conference',
+    ['uses' => 'ConferenceController@index', 'as' => 'conference-index']
+);
+Route::get(
+    '/conference/join',
+    ['uses' => 'ConferenceController@showJoin', 'as' => 'conference-join']
+);
+Route::get(
+    '/conference/connect',
+    ['uses' => 'ConferenceController@showConnect', 'as' => 'conference-connect']
+);
