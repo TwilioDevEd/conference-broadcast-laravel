@@ -11,12 +11,14 @@
 |
 */
 
+//Home related routes
 Route::get(
     '/', ['as' => 'home', function () {
         return response()->view('index');
     }]
 );
 
+//Conference related routes
 Route::get(
     '/conference',
     ['uses' => 'ConferenceController@index', 'as' => 'conference-index']
@@ -30,11 +32,23 @@ Route::get(
     ['uses' => 'ConferenceController@showConnect', 'as' => 'conference-connect']
 );
 
+//Broadcast related routes
 Route::get(
     '/broadcast',
     ['uses' => 'BroadcastController@index', 'as' => 'broadcast-index']
 );
 
+Route::post(
+    '/broadcast/send',
+    ['uses' => 'BroadcastController@send', 'as' => 'broadcast-send']
+);
+
+Route::post(
+    '/broadcast/play',
+    ['uses' => 'BroadcastController@showPlay', 'as' => 'broadcast-play']
+);
+
+//Recording related routes
 Route::get(
     '/recordings',
     ['uses' => 'RecordingController@index', 'as' => 'recording-index']

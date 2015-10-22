@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+    @include('_messages')
     <h1>Broadcast a message</h1>
     <form action="/broadcast/send" method="POST" class="form-horizontal">
         <h3>1. Select a Recording</h3>

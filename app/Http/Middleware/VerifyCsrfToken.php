@@ -13,6 +13,8 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         'recording/create',
-        'recording/record'
+        'recording/record',
+        'broadcast/send',
+        'broadcast/play'
     ];
 }
