@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Services_Twilio as TwilioRestClient;
+use Services_Twilio_Twiml as TwilioTwiml;
 
 class RecordingController extends Controller
 {
@@ -40,5 +41,33 @@ class RecordingController extends Controller
             return 'Error: ' . $e->getMessage();
         }
         return "call_created";
+    }
+
+    public function showRecord()
+    {
+        $response = new TwilioTwiml;
+        $response->say(
+            'Please record your message after the beep. Press star to end your recording.',
+            ['voice' => 'alice', 'language' => 'en-GB']
+        );
+        $response->record(array(
+            'action' => '/recording/hangup',
+            'finishOnKey' => '*',
+            'method' => 'GET'
+        ));
+
+        return response($response)->header('Content-Type', 'application/xml');
+    }
+
+    public function showHangup()
+    {
+        $response = new TwilioTwiml;
+        $response->say(
+            'Your recording has been saved. Good bye.',
+            ['voice' => 'alice', 'language' => 'en-GB']
+        );
+        $response->hangup();
+
+        return response($response)->header('Content-Type', 'application/xml');
     }
 }

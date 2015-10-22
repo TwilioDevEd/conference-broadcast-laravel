@@ -44,3 +44,13 @@ Route::post(
     '/recording/create',
     ['uses' => 'RecordingController@create', 'as' => 'recording-create']
 );
+
+Route::post(
+    '/recording/record',
+    ['uses' => 'RecordingController@showRecord', 'as' => 'recording-record']
+);
+
+Route::get(
+    '/recording/hangup',
+    ['uses' => 'RecordingController@showHangup', 'as' => 'recording-hangup']
+);
