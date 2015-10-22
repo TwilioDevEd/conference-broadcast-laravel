@@ -39,3 +39,8 @@ Route::get(
     '/recordings',
     ['uses' => 'RecordingController@index', 'as' => 'recording-index']
 );
+
+Route::get(
+    '/recording/create',
+    ['uses' => 'RecordingController@create', 'as' => 'recording-create']
+);
