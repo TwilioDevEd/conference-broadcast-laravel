@@ -40,7 +40,7 @@ Route::get(
     ['uses' => 'RecordingController@index', 'as' => 'recording-index']
 );
 
-Route::get(
+Route::post(
     '/recording/create',
     ['uses' => 'RecordingController@create', 'as' => 'recording-create']
 );
