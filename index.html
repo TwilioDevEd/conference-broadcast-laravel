@@ -1,0 +1,208 @@
+<!DOCTYPE html><html><head><title>Learn You conference-broadcast-laravel For Much Win</title><style>body, html {
+  height:100%;
+  width:100%;
+  padding:0;
+  margin:0;
+  overflow:hidden;
+  background-color:#ddd;
+}
+.wrapper {
+  height:100%;
+  width:100%;
+}</style><link rel="shortcut icon" href="//twilio.com/bundles/marketing/img/favicons/favicon.ico"><link rel="apple-touch-icon" href="//twilio.com/bundles/marketing/img/favicons/favicon_57.png"><link rel="apple-touch-icon" sizes="72x72" href="//twilio.com/bundles/marketing/img/favicons/favicon_72.png"><link rel="apple-touch-icon" sizes="114x114" href="//twilio.com/bundles/marketing/img/favicons/favicon_114.png"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"><link rel="stylesheet" href="viewsaurus.css"></head><body><div class="wrapper"><div id="viewsaurus" data-title="Learn You conference-broadcast-laravel For Much Win"><div class="saurus-panes"><div class="saurus-prose"><div class="saurus-prose-header"><div class="title-outer"><span class="step-title">Learn You conference-broadcast-laravel For Much Win</span></div></div><div class="saurus-nav-buttons"><div class="saurus-nav-button nav-overview"><div class="saurus-nav-button-inner"><i class="fa fa-fw fa-list"></i></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-previous"><div class="saurus-nav-button-inner"><a href=""> <i class="fa fa-fw fa-play fa-rotate-180"></i></a></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-next clickable"><div class="saurus-nav-button-inner"><a href="#1"> <i class="fa fa-fw fa-play"></i></a></div></div><div class="saurus-next-title"><span class="next-title-inner"></span></div></div><div class="saurus-progress-bar"></div><div class="saurus-start"><p>Thanks for writing a tutorial with Viewsaurus! This example tutorial will show you the basic functionality of Viewsaurus. Click the &quot;Start&quot; button below to see how Viewsaurus works.</p><a href="#0">Start Tutorial</a></div><div class="saurus-content"><div data-title="Voice Conference and Broadcast" class="chapter"><div data-file="app/Http/routes.php" class="step"><h2 id="about-this-application">About this application</h2>
+<p><img src="//howtodocs.s3.amazonaws.com/RRK-
+screenshot.png" alt="Rapid Response Kit"></p>
+<p>This <a href="//laravel.com/">PHP - Laravel</a> sample application is
+inspired by the <a href="//github.com/Twilio-org
+/rapid-response-kit">Rapid Response Kit</a>, built by Twilio and <a href="//www.twilio.com/blog/2014/03/open-source-nonprofit-tools-
+twilio-org-rapid-response-kit-nt.html">used all over the
+world</a> by organizations who need to act
+quickly in disastrous situations.</p>
+<p>Aid workers can use the tools in this app to communicate immediately
+with a large group of volunteers. In situations where all parties need
+to talk at once the organizer can quickly spin up a conference line. In
+other situations she can broadcast a spoken message to a list of
+volunteer phone numbers.</p>
+<p>To run this sample app yourself, <a href="//github.com/TwilioDevEd/conference-broadcast-laravel">download the code and follow the
+instructions on
+GitHub</a>.
+You might also want to click around the views for
+this app, since in this tutorial we will only be covering the Twilio
+pieces.</p>
+<p>Let&#39;s get started! Click the right arrow above to move to the next step
+of the tutorial.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//laravel.com/docs/5.1">Getting Started with Laravel</a></li>
+<li><a href="//twilio-php.readthedocs.org/en/latest/index.html#getting-started">Getting started with the Twilio PHP library</a></li>
+</ul>
+</div><div data-file="app/Http/routes.php" data-highlight="14-70" class="step"><h2 id="create-a-conference-number">Create a Conference Number</h2>
+<p>Before we can call our conference line we need to configure one of our
+Twilio numbers to send our web application an HTTP request when we get
+an incoming call.</p>
+<p><a href="//www.twilio.com/user/account/phone-numbers/incoming">Click on one of
+your numbers</a> and
+configure the Voice URL to point to our app. In our code the route will
+be <code>/conference/join</code>.</p>
+<p><img src="//s3.amazonaws.com/howtodocs/number-
+config.png" alt="Configuring a Twilio Number"></p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/help/faq/voice/how-do-i-assign-my-twilio-number-to-my-voice-application">Configuring Twilio Numbers for
+Voice</a></li>
+<li><a href="//www.twilio.com/blog/2013/10/test-your-webhooks-
+locally-with-ngrok.html">Using ngrok to test your Twilio webhooks
+locally</a></li>
+<li><a href="//laravel.com/docs/5.1/routing">Laravel Routing guide</a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/ConferenceController.php" data-highlight="46-72" class="step"><h2 id="create-a-simple-conference-call">Create a Simple Conference Call</h2>
+<p>Our Twilio number is now configured to <a href="//www.twilio.com/docs/api/twiml/twilio_request">send HTTP
+requests</a> to this
+controller method on any incoming voice calls. Our app responds with
+<a href="//www.twilio.com/docs/api/twiml">TwiML</a> to tell Twilio how to
+handle the call.</p>
+<p>We use the Twilio PHP library to generate some TwiML that tells
+Twilio to <a href="//www.twilio.com/docs/api/twiml/dial"><code>Dial</code></a> into a
+<a href="https://www.twilio.com/docs/api/twiml/conference">Conference</a> that
+we&#39;re naming <code>&quot;RapidResponseRoom&quot;</code>. This means that anyone who calls
+your Twilio number will automatically join this conference.</p>
+<p>Next we&#39;ll turn this into a moderated conference line, with a moderator
+and listeners.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/quickstart/php/twiml/say-response">PHP TwiML
+Quickstart</a></li>
+<li><a href="//www.twilio.com/docs/api/twiml/conference#attributes-waitUrl">Conference waitUrl parameter</a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/ConferenceController.php" data-highlight="21-39" class="step"><h2 id="create-a-moderated-conference">Create a Moderated Conference</h2>
+<p>In this scenario we ask for the caller&#39;s role before we connect them to
+the conference. These roles are:</p>
+<ul>
+<li><strong>Moderator:</strong> can start and end the conference</li>
+<li><strong>Speaker:</strong> can speak on the conference call</li>
+<li><strong>Listener:</strong> is muted and can only listen to the call</li>
+</ul>
+<p>In this controller we <a href="//www.twilio.com/docs/api/twiml/say"><code>Say</code></a>
+a simple message and then ask the caller to choose a role. Next we tell
+Twilio to <a href="//www.twilio.com/docs/api/twiml/gather"><code>Gather</code></a> a
+button press from the caller&#39;s phone so we know which role they want to
+use.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/quickstart/php/twiml/say-response">PHP TwiML
+Quickstart</a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/ConferenceController.php" data-highlight="46-72" class="step"><h2 id="connect-to-a-moderated-conference">Connect to a Moderated Conference</h2>
+<p>The <em>gather</em> verb from the previous step included an <a href="//www.twilio.com/docs/api/twiml/gather#attributes-action"><code>action</code></a> parameter
+that took an absolute or relative URL as a value — in our case, the
+<code>conference/connect</code> route.</p>
+<p>When the caller finishes entering digits Twilio makes a GET
+request to this URL including a
+<a href="//www.twilio.com/docs/api/twiml/gather#attributes-
+action-parameters"><code>Digits</code></a> parameter with the number our caller chose.</p>
+<p>We use that parameter to set a couple variables, <code>$muted</code> and
+<code>$moderator</code>, which we then use to configure our
+<a href="//www.twilio.com/docs/api/twiml/dial"><code>Dial</code></a> and
+<a href="//www.twilio.com/docs/api/twiml/conference"><code>Conference</code></a> TwiML
+elements.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/api/twiml/conference#attributes-muted">Conference: <code>muted</code></a></li>
+<li><a href="//www.twilio.com/docs/api/twiml/conference#attributes-startConferenceOnEnter">Conference:
+<code>startConferenceOnEnter</code></a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/RecordingController.php" class="step"><h2 id="voice-broadcast">Voice Broadcast</h2>
+<p><img src="//howtodocs.s3.amazonaws.com/RRK-broadcast.png" alt="Rapid Response Kit"></p>
+<p>In addition to hosting conference calls, an organizer can use our
+application to broadcast a voice message to a list of
+phone numbers. She can do this by choosing a recording from a dropdown,
+entering a list of phone numbers and clicking &#39;Submit&#39;.</p>
+<p>To power this feature, we&#39;ll use Twilio&#39;s REST API to fetch all of the
+recordings associated with our account. If our organizer wants to record
+a new message, we&#39;ll call her phone and record her response.</p>
+<p>Let&#39;s take a look at the code.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/quickstart/php/twiml/record-caller-leave-message">Recording: PHP
+Quickstart</a></li>
+<li><a href="//www.twilio.com/docs/quickstart/php/rest/call-request">Make Outgoing Calls: PHP
+Quickstart</a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/RecordingController.php" data-highlight="11-25" class="step"><h2 id="fetch-recordings">Fetch Recordings</h2>
+<p>This route fetches all of the
+<a href="//www.twilio.com/docs/api/rest/recording#list-get-example-1"><code>recordings</code></a>
+associated with our Twilio account. We could filter these
+results by date or call sid using Twilio&#39;s API, but for this example
+we just pull all recordings.</p>
+<p>In order to use Twilio&#39;s handy API we need to first create our Twilio
+client, which we can easily do by passing our credentials.</p>
+<p>Once we get all of the recordings we need to render a JSON response of
+our recordings object. This route will be called by our Javascript on
+page load.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/api/rest/recording">Twilio REST API:
+Recordings</a></li>
+<li><a href="//www.twilio.com/docs/api/rest/recording#list-get-example-4">Twilio REST API: Filter Recordings
+Results</a></li>
+<li><a href="//twilio-php.readthedocs.org/en/latest/usage/rest/calls.html#making-a-phone-call">Making a call:
+PHP REST API</a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/RecordingController.php" data-highlight="46-60" class="step"><h2 id="recording-a-new-message">Recording a new Message</h2>
+<p>If the organizer needs to make a new recording, we simply call her
+and record the call. Twilio makes this simple with the
+<a href="//www.twilio.com/docs/api/twiml/record"><code>Record</code></a> verb.</p>
+<p>Here we <code>Say</code> something to the caller and then <code>Record</code> her message.
+There are many more options we can pass to Record, but here we simply
+tell it to stop recording when &#39;*&#39; is pressed and to redirect to <code>recording/hangup</code>,
+so the call drops when the recording is finished.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/api/twiml/record#attributes">Recording: Optional Attributes</a></li>
+</ul>
+</div><div data-file="app/Http/Controllers/BroadcastController.php" data-highlight="16-44" class="step"><h2 id="broadcast-a-recorded-message">Broadcast a Recorded Message</h2>
+<p>This controller processes our voice broadcast webform, starting with
+the phone numbers our organizer provided.</p>
+<p>Next we initiate a phone call to each number using Twilio&#39;s REST API.</p>
+<p>When Twilio connects this call it will make a request to the
+<a href="www.twilio.com/docs/api/rest/making-calls#url-parameter"><code>url</code></a>
+parameter to get further instructions. We include a
+<code>recording_url</code> parameter in that URL so that our <code>broadcast@play</code>
+controller will know which recording to use.</p>
+<p>That makes the work for our <code>broadcast/play</code> route simple — we just
+<a href="//www.twilio.com/docs/api/twiml/play"><code>Play</code></a> the recording.</p>
+<hr>
+<p><strong>See Also:</strong></p>
+<ul>
+<li><a href="//www.twilio.com/docs/api/twiml/twilio_request">Twilio Voice: Twilio&#39;s Request</a></li>
+</ul>
+</div><div class="step"><h2 id="where-to-next-">Where to next?</h2>
+<p>That&#39;s it! We&#39;ve just implemented two major features of a Rapid Response
+Kit! Maybe in the future we can tackle some of the other features and
+build a full-fledge kit!</p>
+<p>If you&#39;re a PHP developer working with Twilio, you might enjoy these
+other tutorials:</p>
+<p><a href="//www.twilio.com/docs/howto/walkthrough/click-to-call/php/laravel"><strong>Click-To-Call</strong></a></p>
+<p>Put a button on your web page that connects visitors to live support or sales people via telephone.</p>
+<p><a href="https://www.twilio.com/docs/howto/walkthrough/automated-survey/php/laravel"><strong>Automated Survey</strong></a></p>
+<p>Instantly collect structured data from your users with a survey conducted
+over a voice call or SMS text messages.</p>
+<h3 id="did-this-help-">Did this help?</h3>
+<p>Thanks for checking out this tutorial! If you have any feedback to share
+with us, we&#39;d love to hear it. Tweet
+<a href="http://twitter.com/twilio">@twilio</a> to let us know what you think.</p>
+</div></div>
+<div class="saurus-files" style="display:none;"><textarea class="saurus-file" data-file="app/Http/routes.php" data-mode="php">PD9waHAKCi8qCnwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp8IEFwcGxpY2F0aW9uIFJvdXRlcwp8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KfAp8IEhlcmUgaXMgd2hlcmUgeW91IGNhbiByZWdpc3RlciBhbGwgb2YgdGhlIHJvdXRlcyBmb3IgYW4gYXBwbGljYXRpb24uCnwgSXQncyBhIGJyZWV6ZS4gU2ltcGx5IHRlbGwgTGFyYXZlbCB0aGUgVVJJcyBpdCBzaG91bGQgcmVzcG9uZCB0bwp8IGFuZCBnaXZlIGl0IHRoZSBjb250cm9sbGVyIHRvIGNhbGwgd2hlbiB0aGF0IFVSSSBpcyByZXF1ZXN0ZWQuCnwKKi8KCi8vSG9tZSByZWxhdGVkIHJvdXRlcwpSb3V0ZTo6Z2V0KAogICAgJy8nLCBbJ2FzJyA9PiAnaG9tZScsIGZ1bmN0aW9uICgpIHsKICAgICAgICByZXR1cm4gcmVzcG9uc2UoKS0+dmlldygnaW5kZXgnKTsKICAgIH1dCik7CgovL0NvbmZlcmVuY2UgcmVsYXRlZCByb3V0ZXMKUm91dGU6OmdldCgKICAgICcvY29uZmVyZW5jZScsCiAgICBbJ3VzZXMnID0+ICdDb25mZXJlbmNlQ29udHJvbGxlckBpbmRleCcsICdhcycgPT4gJ2NvbmZlcmVuY2UtaW5kZXgnXQopOwpSb3V0ZTo6Z2V0KAogICAgJy9jb25mZXJlbmNlL2pvaW4nLAogICAgWyd1c2VzJyA9PiAnQ29uZmVyZW5jZUNvbnRyb2xsZXJAc2hvd0pvaW4nLCAnYXMnID0+ICdjb25mZXJlbmNlLWpvaW4nXQopOwpSb3V0ZTo6Z2V0KAogICAgJy9jb25mZXJlbmNlL2Nvbm5lY3QnLAogICAgWyd1c2VzJyA9PiAnQ29uZmVyZW5jZUNvbnRyb2xsZXJAc2hvd0Nvbm5lY3QnLCAnYXMnID0+ICdjb25mZXJlbmNlLWNvbm5lY3QnXQopOwoKLy9Ccm9hZGNhc3QgcmVsYXRlZCByb3V0ZXMKUm91dGU6OmdldCgKICAgICcvYnJvYWRjYXN0JywKICAgIFsndXNlcycgPT4gJ0Jyb2FkY2FzdENvbnRyb2xsZXJAaW5kZXgnLCAnYXMnID0+ICdicm9hZGNhc3QtaW5kZXgnXQopOwoKUm91dGU6OnBvc3QoCiAgICAnL2Jyb2FkY2FzdC9zZW5kJywKICAgIFsndXNlcycgPT4gJ0Jyb2FkY2FzdENvbnRyb2xsZXJAc2VuZCcsICdhcycgPT4gJ2Jyb2FkY2FzdC1zZW5kJ10KKTsKClJvdXRlOjpwb3N0KAogICAgJy9icm9hZGNhc3QvcGxheScsCiAgICBbJ3VzZXMnID0+ICdCcm9hZGNhc3RDb250cm9sbGVyQHNob3dQbGF5JywgJ2FzJyA9PiAnYnJvYWRjYXN0LXBsYXknXQopOwoKLy9SZWNvcmRpbmcgcmVsYXRlZCByb3V0ZXMKUm91dGU6OmdldCgKICAgICcvcmVjb3JkaW5ncycsCiAgICBbJ3VzZXMnID0+ICdSZWNvcmRpbmdDb250cm9sbGVyQGluZGV4JywgJ2FzJyA9PiAncmVjb3JkaW5nLWluZGV4J10KKTsKClJvdXRlOjpwb3N0KAogICAgJy9yZWNvcmRpbmcvY3JlYXRlJywKICAgIFsndXNlcycgPT4gJ1JlY29yZGluZ0NvbnRyb2xsZXJAY3JlYXRlJywgJ2FzJyA9PiAncmVjb3JkaW5nLWNyZWF0ZSddCik7CgpSb3V0ZTo6cG9zdCgKICAgICcvcmVjb3JkaW5nL3JlY29yZCcsCiAgICBbJ3VzZXMnID0+ICdSZWNvcmRpbmdDb250cm9sbGVyQHNob3dSZWNvcmQnLCAnYXMnID0+ICdyZWNvcmRpbmctcmVjb3JkJ10KKTsKClJvdXRlOjpnZXQoCiAgICAnL3JlY29yZGluZy9oYW5ndXAnLAogICAgWyd1c2VzJyA9PiAnUmVjb3JkaW5nQ29udHJvbGxlckBzaG93SGFuZ3VwJywgJ2FzJyA9PiAncmVjb3JkaW5nLWhhbmd1cCddCik7Cg==</textarea>
+<textarea class="saurus-file" data-file="app/Http/Controllers/ConferenceController.php" data-mode="php">PD9waHAKbmFtZXNwYWNlIEFwcFxIdHRwXENvbnRyb2xsZXJzOwp1c2UgSWxsdW1pbmF0ZVxIdHRwXFJlcXVlc3Q7CnVzZSBBcHBcSHR0cFxSZXF1ZXN0czsKdXNlIEFwcFxIdHRwXENvbnRyb2xsZXJzXENvbnRyb2xsZXI7CnVzZSBTZXJ2aWNlc19Ud2lsaW9fVHdpbWw7CgpjbGFzcyBDb25mZXJlbmNlQ29udHJvbGxlciBleHRlbmRzIENvbnRyb2xsZXIKewogICAgcHVibGljIGZ1bmN0aW9uIGluZGV4KCkKICAgIHsKICAgICAgICAkY29uZmVyZW5jZU51bWJlciA9IGNvbmZpZygnc2VydmljZXMudHdpbGlvJylbJ3JyTnVtYmVyJ107CiAgICAgICAgcmV0dXJuIHZpZXcoJ2NvbmZlcmVuY2UnLCBbJ2NvbmZlcmVuY2VOdW1iZXInID0+ICRjb25mZXJlbmNlTnVtYmVyXSk7CiAgICB9CgogICAgLyoqCiAgICAgKiBSZXBsaWVzIHdpdGggYSBqb2luIGNhbGwgeG1sCiAgICAgKgogICAgICogQHJldHVybiBcSWxsdW1pbmF0ZVxIdHRwXFJlc3BvbnNlCiAgICAgKi8KICAgIHB1YmxpYyBmdW5jdGlvbiBzaG93Sm9pbigpCiAgICB7CiAgICAgICAgJHJlc3BvbnNlID0gbmV3IFNlcnZpY2VzX1R3aWxpb19Ud2ltbDsKICAgICAgICAkcmVzcG9uc2UtPnNheSgKICAgICAgICAgICAgJ1lvdSBhcmUgYWJvdXQgdG8gam9pbiB0aGUgUmFwaWQgUmVzcG9uc2UgY29uZmVyZW5jZS4nLAogICAgICAgICAgICBbJ3ZvaWNlJyA9PiAnYWxpY2UnLCAnbGFuZ3VhZ2UnID0+ICdlbi1HQiddCiAgICAgICAgKTsKICAgICAgICAkZ2F0aGVyID0gJHJlc3BvbnNlLT5nYXRoZXIoCiAgICAgICAgICAgIFsnbnVtRGlnaXRzJyA9PiAxLAogICAgICAgICAgICAgJ2FjdGlvbicgPT4gcm91dGUoJ2NvbmZlcmVuY2UtY29ubmVjdCcsIFtdLCBmYWxzZSksCiAgICAgICAgICAgICAnbWV0aG9kJyA9PiAnR0VUJwogICAgICAgICAgICBdCiAgICAgICAgKTsKICAgICAgICAkZ2F0aGVyLT5zYXkoJ1ByZXNzIDEgdG8gam9pbiBhcyBhIGxpc3RlbmVyLicpOwogICAgICAgICRnYXRoZXItPnNheSgnUHJlc3MgMiB0byBqb2luIGFzIGEgc3BlYWtlci4nKTsKICAgICAgICAkZ2F0aGVyLT5zYXkoJ1ByZXNzIDMgdG8gam9pbiBhcyB0aGUgbW9kZXJhdG9yLicpOwoKICAgICAgICByZXR1cm4gcmVzcG9uc2UoJHJlc3BvbnNlKS0+aGVhZGVyKCdDb250ZW50LVR5cGUnLCAnYXBwbGljYXRpb24veG1sJyk7CiAgICB9CgogICAgLyoqCiAgICAgKiBSZXBsaWVzIHdpdGggYSBjYWxsIGNvbm5lY3QgeG1sCiAgICAgKgogICAgICogQHJldHVybiBcSWxsdW1pbmF0ZVxIdHRwXFJlc3BvbnNlCiAgICAgKi8KICAgIHB1YmxpYyBmdW5jdGlvbiBzaG93Q29ubmVjdChSZXF1ZXN0ICRyZXF1ZXN0KQogICAgewogICAgICAgICRtdXRlZCA9IGZhbHNlOwogICAgICAgICRtb2RlcmF0b3IgPSBmYWxzZTsKICAgICAgICAkZGlnaXRzID0gJHJlcXVlc3QtPmlucHV0KCdEaWdpdHMnKTsKICAgICAgICBpZiAoJGRpZ2l0cyA9PT0gJzEnKSB7CiAgICAgICAgICAgICRtdXRlZCA9IHRydWU7CiAgICAgICAgfQogICAgICAgIGlmICgkZGlnaXRzID09PSAnMycpIHsKICAgICAgICAgICAgJG1vZGVyYXRvciA9IHRydWU7CiAgICAgICAgfQoKICAgICAgICAkcmVzcG9uc2UgPSBuZXcgU2VydmljZXNfVHdpbGlvX1R3aW1sOwogICAgICAgICRyZXNwb25zZS0+c2F5KAogICAgICAgICAgICAnWW91IGhhdmUgam9pbmVkIHRoZSBjb25mZXJlbmNlLicsCiAgICAgICAgICAgIFsndm9pY2UnID0+ICdhbGljZScsICdsYW5ndWFnZScgPT4gJ2VuLUdCJ10KICAgICAgICApOwogICAgICAgICRkaWFsID0gJHJlc3BvbnNlLT5kaWFsKCk7CiAgICAgICAgJGRpYWwtPmNvbmZlcmVuY2UoJ1JhcGlkUmVzcG9uc2VSb29tJywgYXJyYXkoCiAgICAgICAgICAgICdzdGFydENvbmZlcmVuY2VPbkVudGVyJyA9PiAkbW9kZXJhdG9yLAogICAgICAgICAgICAnZW5kQ29uZmVyZW5jZU9uRXhpdCcgPT4gJG1vZGVyYXRvciwKICAgICAgICAgICAgJ211dGVkJyA9PiAkbXV0ZWQsCiAgICAgICAgICAgICd3YWl0VXJsJyA9PiAnaHR0cDovL3R3aW1sZXRzLmNvbS9ob2xkbXVzaWM/QnVja2V0PWNvbS50d2lsaW8ubXVzaWMuYW1iaWVudCcsCiAgICAgICAgKSk7CgogICAgICAgIHJldHVybiByZXNwb25zZSgkcmVzcG9uc2UpLT5oZWFkZXIoJ0NvbnRlbnQtVHlwZScsICdhcHBsaWNhdGlvbi94bWwnKTsKICAgIH0KfQo=</textarea>
+<textarea class="saurus-file" data-file="app/Http/Controllers/RecordingController.php" data-mode="php">PD9waHAKbmFtZXNwYWNlIEFwcFxIdHRwXENvbnRyb2xsZXJzOwp1c2UgSWxsdW1pbmF0ZVxIdHRwXFJlcXVlc3Q7CnVzZSBBcHBcSHR0cFxSZXF1ZXN0czsKdXNlIEFwcFxIdHRwXENvbnRyb2xsZXJzXENvbnRyb2xsZXI7CnVzZSBTZXJ2aWNlc19Ud2lsaW8gYXMgVHdpbGlvUmVzdENsaWVudDsKdXNlIFNlcnZpY2VzX1R3aWxpb19Ud2ltbCBhcyBUd2lsaW9Ud2ltbDsKCmNsYXNzIFJlY29yZGluZ0NvbnRyb2xsZXIgZXh0ZW5kcyBDb250cm9sbGVyCnsKICAgIHB1YmxpYyBmdW5jdGlvbiBpbmRleChUd2lsaW9SZXN0Q2xpZW50ICRjbGllbnQpCiAgICB7CiAgICAgICAgJGJhc2VVcmwgPSAnJzsKICAgICAgICAkcmVjb3JkaW5ncyA9IGFycmF5KCk7CgogICAgICAgIGZvcmVhY2goJGNsaWVudC0+YWNjb3VudC0+cmVjb3JkaW5ncyBhcyAkcmVjb3JkaW5nKSB7CiAgICAgICAgICAgICRlbnRyeSA9IGFycmF5KAogICAgICAgICAgICAgICAgJ3VybCcgPT4gJ2h0dHBzOi8vYXBpLnR3aWxpby5jb20nIC4gJHJlY29yZGluZy0+dXJpLAogICAgICAgICAgICAgICAgJ2RhdGUnID0+ICRyZWNvcmRpbmctPmRhdGVfY3JlYXRlZAogICAgICAgICAgICApOwogICAgICAgICAgICBhcnJheV9wdXNoKCRyZWNvcmRpbmdzLCAkZW50cnkpOwogICAgICAgIH0KCiAgICAgICAgcmV0dXJuIHJlc3BvbnNlKCktPmpzb24oJHJlY29yZGluZ3MpOwogICAgfQoKICAgIHB1YmxpYyBmdW5jdGlvbiBjcmVhdGUoUmVxdWVzdCAkcmVxdWVzdCwgVHdpbGlvUmVzdENsaWVudCAkY2xpZW50KQogICAgewogICAgICAgICRkZXN0aW5hdGlvbk51bWJlciA9ICRyZXF1ZXN0LT5pbnB1dCgncGhvbmVfbnVtYmVyJyk7CiAgICAgICAgJHR3aWxpb051bWJlciA9IGNvbmZpZygnc2VydmljZXMudHdpbGlvJylbJ251bWJlciddOwoKICAgICAgICAkcGF0aCA9IHN0cl9yZXBsYWNlKCRyZXF1ZXN0LT5wYXRoKCksICcnLCAkcmVxdWVzdC0+dXJsKCkpIC4gJ3JlY29yZGluZy9yZWNvcmQnOwoKICAgICAgICB0cnkgewogICAgICAgICAgICAkY2xpZW50LT5hY2NvdW50LT5jYWxscy0+Y3JlYXRlKAogICAgICAgICAgICAgICAgJHR3aWxpb051bWJlciwgLy8gVGhlIG51bWJlciBvZiB0aGUgcGhvbmUgaW5pdGlhdGluZyB0aGUgY2FsbAogICAgICAgICAgICAgICAgJGRlc3RpbmF0aW9uTnVtYmVyLCAvLyBUaGUgbnVtYmVyIG9mIHRoZSBwaG9uZSByZWNlaXZpbmcgY2FsbAogICAgICAgICAgICAgICAgJHBhdGggLy8gVGhlIFVSTCBUd2lsaW8gd2lsbCByZXF1ZXN0IHdoZW4gdGhlIGNhbGwgaXMgYW5zd2VyZWQKICAgICAgICAgICAgKTsKICAgICAgICB9IGNhdGNoIChFeGNlcHRpb24gJGUpIHsKICAgICAgICAgICAgcmV0dXJuICdFcnJvcjogJyAuICRlLT5nZXRNZXNzYWdlKCk7CiAgICAgICAgfQogICAgICAgIHJldHVybiAiY2FsbF9jcmVhdGVkIjsKICAgIH0KCiAgICBwdWJsaWMgZnVuY3Rpb24gc2hvd1JlY29yZCgpCiAgICB7CiAgICAgICAgJHJlc3BvbnNlID0gbmV3IFR3aWxpb1R3aW1sOwogICAgICAgICRyZXNwb25zZS0+c2F5KAogICAgICAgICAgICAnUGxlYXNlIHJlY29yZCB5b3VyIG1lc3NhZ2UgYWZ0ZXIgdGhlIGJlZXAuIFByZXNzIHN0YXIgdG8gZW5kIHlvdXIgcmVjb3JkaW5nLicsCiAgICAgICAgICAgIFsndm9pY2UnID0+ICdhbGljZScsICdsYW5ndWFnZScgPT4gJ2VuLUdCJ10KICAgICAgICApOwogICAgICAgICRyZXNwb25zZS0+cmVjb3JkKGFycmF5KAogICAgICAgICAgICAnYWN0aW9uJyA9PiAnL3JlY29yZGluZy9oYW5ndXAnLAogICAgICAgICAgICAnZmluaXNoT25LZXknID0+ICcqJywKICAgICAgICAgICAgJ21ldGhvZCcgPT4gJ0dFVCcKICAgICAgICApKTsKCiAgICAgICAgcmV0dXJuIHJlc3BvbnNlKCRyZXNwb25zZSktPmhlYWRlcignQ29udGVudC1UeXBlJywgJ2FwcGxpY2F0aW9uL3htbCcpOwogICAgfQoKICAgIHB1YmxpYyBmdW5jdGlvbiBzaG93SGFuZ3VwKCkKICAgIHsKICAgICAgICAkcmVzcG9uc2UgPSBuZXcgVHdpbGlvVHdpbWw7CiAgICAgICAgJHJlc3BvbnNlLT5zYXkoCiAgICAgICAgICAgICdZb3VyIHJlY29yZGluZyBoYXMgYmVlbiBzYXZlZC4gR29vZCBieWUuJywKICAgICAgICAgICAgWyd2b2ljZScgPT4gJ2FsaWNlJywgJ2xhbmd1YWdlJyA9PiAnZW4tR0InXQogICAgICAgICk7CiAgICAgICAgJHJlc3BvbnNlLT5oYW5ndXAoKTsKCiAgICAgICAgcmV0dXJuIHJlc3BvbnNlKCRyZXNwb25zZSktPmhlYWRlcignQ29udGVudC1UeXBlJywgJ2FwcGxpY2F0aW9uL3htbCcpOwogICAgfQp9Cg==</textarea>
+<textarea class="saurus-file" data-file="app/Http/Controllers/BroadcastController.php" data-mode="php">PD9waHAKbmFtZXNwYWNlIEFwcFxIdHRwXENvbnRyb2xsZXJzOwp1c2UgSWxsdW1pbmF0ZVxIdHRwXFJlcXVlc3Q7CnVzZSBBcHBcSHR0cFxSZXF1ZXN0czsKdXNlIEFwcFxIdHRwXENvbnRyb2xsZXJzXENvbnRyb2xsZXI7CnVzZSBTZXJ2aWNlc19Ud2lsaW8gYXMgVHdpbGlvUmVzdENsaWVudDsKdXNlIFNlcnZpY2VzX1R3aWxpb19Ud2ltbCBhcyBUd2lsaW9Ud2ltbDsKCmNsYXNzIEJyb2FkY2FzdENvbnRyb2xsZXIgZXh0ZW5kcyBDb250cm9sbGVyCnsKICAgIHB1YmxpYyBmdW5jdGlvbiBpbmRleCgpCiAgICB7CiAgICAgICAgcmV0dXJuIHZpZXcoJ2Jyb2FkY2FzdCcpOwogICAgfQoKICAgIHB1YmxpYyBmdW5jdGlvbiBzZW5kKFJlcXVlc3QgJHJlcXVlc3QsIFR3aWxpb1Jlc3RDbGllbnQgJGNsaWVudCkKICAgIHsKICAgICAgICAkZGVzdGluYXRpb25OdW1iZXJzID0gJHJlcXVlc3QtPmlucHV0KCdudW1iZXJzJyk7CiAgICAgICAgJG51bWJlcnNBcnJheSA9IGV4cGxvZGUoJywnLCAkZGVzdGluYXRpb25OdW1iZXJzKTsKICAgICAgICAkcmVjb3JkaW5nVXJsID0gJHJlcXVlc3QtPmlucHV0KCdyZWNvcmRpbmdfdXJsJyk7CiAgICAgICAgJHR3aWxpb051bWJlciA9IGNvbmZpZygnc2VydmljZXMudHdpbGlvJylbJ251bWJlciddOwoKICAgICAgICAkcGF0aCA9IHN0cl9yZXBsYWNlKCRyZXF1ZXN0LT5wYXRoKCksICcnLCAkcmVxdWVzdC0+dXJsKCkpLgogICAgICAgICAgICAnYnJvYWRjYXN0L3BsYXk/cmVjb3JkaW5nX3VybD0nIC4gJHJlY29yZGluZ1VybDsKCiAgICAgICAgZm9yZWFjaCgkbnVtYmVyc0FycmF5IGFzICRudW1iZXIpIHsKICAgICAgICAgICAgdHJ5IHsKICAgICAgICAgICAgICAgICRjbGllbnQtPmFjY291bnQtPmNhbGxzLT5jcmVhdGUoCiAgICAgICAgICAgICAgICAgICAgJHR3aWxpb051bWJlciwgLy8gVGhlIG51bWJlciBvZiB0aGUgcGhvbmUgaW5pdGlhdGluZyB0aGUgY2FsbAogICAgICAgICAgICAgICAgICAgIHRyaW0oJG51bWJlciksIC8vIFRoZSBudW1iZXIgb2YgdGhlIHBob25lIHJlY2VpdmluZyBjYWxsCiAgICAgICAgICAgICAgICAgICAgJHBhdGggLy8gVGhlIFVSTCBUd2lsaW8gd2lsbCByZXF1ZXN0IHdoZW4gdGhlIGNhbGwgaXMgYW5zd2VyZWQKICAgICAgICAgICAgICAgICk7CiAgICAgICAgICAgIH0gY2F0Y2ggKEV4Y2VwdGlvbiAkZSkgewogICAgICAgICAgICAgICAgcmV0dXJuICdFcnJvcjogJyAuICRlLT5nZXRNZXNzYWdlKCk7CiAgICAgICAgICAgIH0KICAgICAgICB9CgogICAgICAgICRyZXF1ZXN0LT5zZXNzaW9uKCktPmZsYXNoKAogICAgICAgICAgICAnc3RhdHVzJywKICAgICAgICAgICAgIkJyb2FkY2FzdCBtZXNzYWdlIHNlbnQhIgogICAgICAgICk7CgogICAgICAgIHJldHVybiByZWRpcmVjdCgpLT5yb3V0ZSgnYnJvYWRjYXN0LWluZGV4Jyk7CiAgICB9CgogICAgcHVibGljIGZ1bmN0aW9uIHNob3dQbGF5KFJlcXVlc3QgJHJlcXVlc3QpCiAgICB7CiAgICAgICAgJHJlY29yZGluZ1VybCA9ICRyZXF1ZXN0LT5pbnB1dCgncmVjb3JkaW5nX3VybCcpOwogICAgICAgICRyZXNwb25zZSA9IG5ldyBUd2lsaW9Ud2ltbDsKICAgICAgICAkcmVzcG9uc2UtPnBsYXkoJHJlY29yZGluZ1VybCk7CgogICAgICAgIHJldHVybiByZXNwb25zZSgkcmVzcG9uc2UpLT5oZWFkZXIoJ0NvbnRlbnQtVHlwZScsICdhcHBsaWNhdGlvbi94bWwnKTsKICAgIH0KfQo=</textarea>
+</div>
+</div><div class="saurus-overview"><ul></ul></div></div><div class="saurus-code"><div class="file-path"><span class="crumb-container"></span><i class="fa fa-fw fa-folder"></i></div><div class="saurus-editor"></div></div><div class="saurus-explorer"><div class="saurus-file-list"></div><a href="https://github.com/&lt;your GitHub username&gt;/&lt;GitHub repo name&gt;" target="_blank" class="explorer-get-code"> <i class="fa fa-lg fa-github-square"> </i>View Code on GitHub</a></div></div></div></div><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script><script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script><script src="ace/ace.js"></script><script src="ace/theme-monokai.js"></script><script src="viewsaurus.js"></script></body></html>

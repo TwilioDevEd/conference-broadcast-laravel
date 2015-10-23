@@ -1,0 +1,6 @@
+{
+    "title": "Voice Conference and Broadcast",
+    "repo": "TwilioDevEd/conference-broadcast-laravel",
+    "description": "Learn how to use Twilio's conference features and REST API to build a conference line with advanced controls. Additionally learn how to build a voice broadcast system as part of this Rapid Response application.",
+    "heroku": false
+}

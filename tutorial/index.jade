@@ -1,0 +1,255 @@
+.chapter(data-title='Voice Conference and Broadcast')
+  .step(data-file='app/Http/routes.php')
+    :markdown
+      ## About this application
+
+      ![Rapid Response Kit](//howtodocs.s3.amazonaws.com/RRK-
+      screenshot.png)
+
+      This [PHP - Laravel](//laravel.com/) sample application is
+      inspired by the [Rapid Response Kit](//github.com/Twilio-org
+      /rapid-response-kit), built by Twilio and [used all over the
+      world](//www.twilio.com/blog/2014/03/open-source-nonprofit-tools-
+      twilio-org-rapid-response-kit-nt.html) by organizations who need to act
+      quickly in disastrous situations.
+
+      Aid workers can use the tools in this app to communicate immediately
+      with a large group of volunteers. In situations where all parties need
+      to talk at once the organizer can quickly spin up a conference line. In
+      other situations she can broadcast a spoken message to a list of
+      volunteer phone numbers.
+
+      To run this sample app yourself, [download the code and follow the
+      instructions on
+      GitHub](//github.com/TwilioDevEd/conference-broadcast-laravel).
+      You might also want to click around the views for
+      this app, since in this tutorial we will only be covering the Twilio
+      pieces.
+
+      Let's get started! Click the right arrow above to move to the next step
+      of the tutorial.
+
+      ---
+
+      **See Also:**
+      * [Getting Started with Laravel](//laravel.com/docs/5.1)
+      * [Getting started with the Twilio PHP library](//twilio-php.readthedocs.org/en/latest/index.html#getting-started)
+
+  .step(data-file='app/Http/routes.php', data-highlight='14-70')
+    :markdown
+      ## Create a Conference Number
+
+      Before we can call our conference line we need to configure one of our
+      Twilio numbers to send our web application an HTTP request when we get
+      an incoming call.
+
+      [Click on one of
+      your numbers](//www.twilio.com/user/account/phone-numbers/incoming) and
+      configure the Voice URL to point to our app. In our code the route will
+      be `/conference/join`.
+
+      ![Configuring a Twilio Number](//s3.amazonaws.com/howtodocs/number-
+      config.png)
+
+      ---
+
+      **See Also:**
+      * [Configuring Twilio Numbers for
+        Voice](//www.twilio.com/help/faq/voice/how-do-i-assign-my-twilio-number-to-my-voice-application)
+      * [Using ngrok to test your Twilio webhooks
+        locally](//www.twilio.com/blog/2013/10/test-your-webhooks-
+        locally-with-ngrok.html)
+      * [Laravel Routing guide](//laravel.com/docs/5.1/routing)
+
+  .step(data-file='app/Http/Controllers/ConferenceController.php', data-highlight='46-72')
+    :markdown
+      ## Create a Simple Conference Call
+
+      Our Twilio number is now configured to [send HTTP
+      requests](//www.twilio.com/docs/api/twiml/twilio_request) to this
+      controller method on any incoming voice calls. Our app responds with
+      [TwiML](//www.twilio.com/docs/api/twiml) to tell Twilio how to
+      handle the call.
+
+      We use the Twilio PHP library to generate some TwiML that tells
+      Twilio to [`Dial`](//www.twilio.com/docs/api/twiml/dial) into a
+      [Conference](https://www.twilio.com/docs/api/twiml/conference) that
+      we're naming `"RapidResponseRoom"`. This means that anyone who calls
+      your Twilio number will automatically join this conference.
+
+      Next we'll turn this into a moderated conference line, with a moderator
+      and listeners.
+
+      ---
+
+      **See Also:**
+      * [PHP TwiML
+        Quickstart](//www.twilio.com/docs/quickstart/php/twiml/say-response)
+      * [Conference waitUrl parameter](//www.twilio.com/docs/api/twiml/conference#attributes-waitUrl)
+
+  .step(data-file='app/Http/Controllers/ConferenceController.php', data-highlight='21-39')
+    :markdown
+      ## Create a Moderated Conference
+
+      In this scenario we ask for the caller's role before we connect them to
+      the conference. These roles are:
+      * **Moderator:** can start and end the conference
+      * **Speaker:** can speak on the conference call
+      * **Listener:** is muted and can only listen to the call
+
+      In this controller we [`Say`](//www.twilio.com/docs/api/twiml/say)
+      a simple message and then ask the caller to choose a role. Next we tell
+      Twilio to [`Gather`](//www.twilio.com/docs/api/twiml/gather) a
+      button press from the caller's phone so we know which role they want to
+      use.
+
+      ---
+
+      **See Also:**
+      * [PHP TwiML
+        Quickstart](//www.twilio.com/docs/quickstart/php/twiml/say-response)
+
+  .step(data-file='app/Http/Controllers/ConferenceController.php', data-highlight='46-72')
+    :markdown
+      ## Connect to a Moderated Conference
+
+      The *gather* verb from the previous step included an [`action`](//www.twilio.com/docs/api/twiml/gather#attributes-action) parameter
+      that took an absolute or relative URL as a value — in our case, the
+      `conference/connect` route.
+
+      When the caller finishes entering digits Twilio makes a GET
+      request to this URL including a
+      [`Digits`](//www.twilio.com/docs/api/twiml/gather#attributes-
+      action-parameters) parameter with the number our caller chose.
+
+      We use that parameter to set a couple variables, `$muted` and
+      `$moderator`, which we then use to configure our
+      [`Dial`](//www.twilio.com/docs/api/twiml/dial) and
+      [`Conference`](//www.twilio.com/docs/api/twiml/conference) TwiML
+      elements.
+
+      ---
+
+      **See Also:**
+      * [Conference: `muted`](//www.twilio.com/docs/api/twiml/conference#attributes-muted)
+      * [Conference:
+        `startConferenceOnEnter`](//www.twilio.com/docs/api/twiml/conference#attributes-startConferenceOnEnter)
+
+  .step(data-file='app/Http/Controllers/RecordingController.php')
+    :markdown
+      ## Voice Broadcast
+
+      ![Rapid Response Kit](//howtodocs.s3.amazonaws.com/RRK-broadcast.png)
+
+      In addition to hosting conference calls, an organizer can use our
+      application to broadcast a voice message to a list of
+      phone numbers. She can do this by choosing a recording from a dropdown,
+      entering a list of phone numbers and clicking 'Submit'.
+
+      To power this feature, we'll use Twilio's REST API to fetch all of the
+      recordings associated with our account. If our organizer wants to record
+      a new message, we'll call her phone and record her response.
+
+      Let's take a look at the code.
+
+      ---
+
+      **See Also:**
+      * [Recording: PHP
+        Quickstart](//www.twilio.com/docs/quickstart/php/twiml/record-caller-leave-message)
+      * [Make Outgoing Calls: PHP
+        Quickstart](//www.twilio.com/docs/quickstart/php/rest/call-request)
+
+  .step(data-file='app/Http/Controllers/RecordingController.php', data-highlight='11-25')
+    :markdown
+      ## Fetch Recordings
+
+      This route fetches all of the
+      [`recordings`](//www.twilio.com/docs/api/rest/recording#list-get-example-1)
+      associated with our Twilio account. We could filter these
+      results by date or call sid using Twilio's API, but for this example
+      we just pull all recordings.
+
+      In order to use Twilio's handy API we need to first create our Twilio
+      client, which we can easily do by passing our credentials.
+
+      Once we get all of the recordings we need to render a JSON response of
+      our recordings object. This route will be called by our Javascript on
+      page load.
+
+      ---
+
+      **See Also:**
+      * [Twilio REST API:
+        Recordings](//www.twilio.com/docs/api/rest/recording)
+      * [Twilio REST API: Filter Recordings
+        Results](//www.twilio.com/docs/api/rest/recording#list-get-example-4)
+      * [Making a call:
+        PHP REST API](//twilio-php.readthedocs.org/en/latest/usage/rest/calls.html#making-a-phone-call)
+
+  .step(data-file='app/Http/Controllers/RecordingController.php', data-highlight='46-60')
+    :markdown
+      ## Recording a new Message
+
+      If the organizer needs to make a new recording, we simply call her
+      and record the call. Twilio makes this simple with the
+      [`Record`](//www.twilio.com/docs/api/twiml/record) verb.
+
+      Here we `Say` something to the caller and then `Record` her message.
+      There are many more options we can pass to Record, but here we simply
+      tell it to stop recording when '*' is pressed and to redirect to `recording/hangup`,
+      so the call drops when the recording is finished.
+
+      ---
+
+      **See Also:**
+      * [Recording: Optional Attributes](//www.twilio.com/docs/api/twiml/record#attributes)
+
+  .step(data-file='app/Http/Controllers/BroadcastController.php', data-highlight='16-44')
+    :markdown
+      ## Broadcast a Recorded Message
+
+      This controller processes our voice broadcast webform, starting with
+      the phone numbers our organizer provided.
+
+      Next we initiate a phone call to each number using Twilio's REST API.
+
+      When Twilio connects this call it will make a request to the
+      [`url`](www.twilio.com/docs/api/rest/making-calls#url-parameter)
+      parameter to get further instructions. We include a
+      `recording_url` parameter in that URL so that our `broadcast@play`
+      controller will know which recording to use.
+
+      That makes the work for our `broadcast/play` route simple — we just
+      [`Play`](//www.twilio.com/docs/api/twiml/play) the recording.
+
+      ---
+
+      **See Also:**
+      * [Twilio Voice: Twilio's Request](//www.twilio.com/docs/api/twiml/twilio_request)
+
+  .step
+    :markdown
+      ## Where to next?
+
+      That's it! We've just implemented two major features of a Rapid Response
+      Kit! Maybe in the future we can tackle some of the other features and
+      build a full-fledge kit!
+
+      If you're a PHP developer working with Twilio, you might enjoy these
+      other tutorials:
+
+      [**Click-To-Call**](//www.twilio.com/docs/howto/walkthrough/click-to-call/php/laravel)
+
+      Put a button on your web page that connects visitors to live support or sales people via telephone.
+
+      [**Automated Survey**](https://www.twilio.com/docs/howto/walkthrough/automated-survey/php/laravel)
+
+      Instantly collect structured data from your users with a survey conducted
+      over a voice call or SMS text messages.
+
+      ### Did this help?
+
+      Thanks for checking out this tutorial! If you have any feedback to share
+      with us, we'd love to hear it. Tweet
+      [@twilio](http://twitter.com/twilio) to let us know what you think.
