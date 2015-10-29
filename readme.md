@@ -44,7 +44,7 @@ An example application implementing an disaster response kit that allows an orga
  You will also need to configure Twilio to call your application when calls are received.
 
  You will need to provision at least one Twilio number with voice capabilities
- so the application's users can take surveys. You can buy a number [right
+ so the application's users can participate in conferences. You can buy a number [right
  here](https://www.twilio.com/user/account/phone-numbers/search). Once you have
  a number you need to configure your number to work with your application. Open
  [the number management page](https://www.twilio.com/user/account/phone-numbers/incoming)
