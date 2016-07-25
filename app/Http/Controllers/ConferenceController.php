@@ -1,9 +1,9 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Services_Twilio_Twiml;
+use Illuminate\Http\Request;
+use Twilio\Twiml;
 
 class ConferenceController extends Controller
 {
@@ -20,15 +20,19 @@ class ConferenceController extends Controller
      */
     public function showJoin()
     {
-        $response = new Services_Twilio_Twiml;
+        $response = new Twiml();
         $response->say(
             'You are about to join the Rapid Response conference.',
-            ['voice' => 'alice', 'language' => 'en-GB']
+            [
+                'voice' => 'alice',
+                'language' => 'en-GB'
+            ]
         );
         $gather = $response->gather(
-            ['numDigits' => 1,
-             'action' => route('conference-connect', [], false),
-             'method' => 'GET'
+            [
+                'numDigits' => 1,
+                'action' => route('conference-connect', [], false),
+                'method' => 'GET'
             ]
         );
         $gather->say('Press 1 to join as a listener.');
@@ -55,18 +59,24 @@ class ConferenceController extends Controller
             $moderator = true;
         }
 
-        $response = new Services_Twilio_Twiml;
+        $response = new Twiml();
         $response->say(
             'You have joined the conference.',
-            ['voice' => 'alice', 'language' => 'en-GB']
+            [
+                'voice' => 'alice',
+                'language' => 'en-GB'
+            ]
         );
         $dial = $response->dial();
-        $dial->conference('RapidResponseRoom', array(
-            'startConferenceOnEnter' => $moderator,
-            'endConferenceOnExit' => $moderator,
-            'muted' => $muted,
-            'waitUrl' => 'http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient',
-        ));
+        $dial->conference(
+            'RapidResponseRoom',
+            [
+                'startConferenceOnEnter' => $moderator,
+                'endConferenceOnExit' => $moderator,
+                'muted' => $muted,
+                'waitUrl' => 'http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient',
+            ]
+        );
 
         return response($response)->header('Content-Type', 'application/xml');
     }
