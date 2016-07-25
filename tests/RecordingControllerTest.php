@@ -1,36 +1,37 @@
 <?php
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Agent;
+
 class RecordingControllerTest extends TestCase
 {
     public function testIndex()
     {
         // Given
-        $mockTwilioService = Mockery::mock('Services_Twilio')
-                                ->makePartial();
+        $mockTwilioClient = $this->getMockBuilder(\Twilio\Rest\Client::class)
+            ->getMock();
 
-        $mockTwilioAccount = Mockery::mock();
-
-        $mockTwilioRecording = Mockery::mock();
-        $mockTwilioRecording->uri = '/some/uri';
+        $mockTwilioRecording = new \StdClass();
+        $mockTwilioRecording->uri = 'some/uri';
         $mockTwilioRecording->date_created = 'some_date';
-        $mockTwilioRecording2 = Mockery::mock();
-        $mockTwilioRecording2->uri = '/some/other/uri';
+        $mockTwilioRecording2 = new \StdClass();
+        $mockTwilioRecording2->uri = 'some/other/uri';
         $mockTwilioRecording2->date_created = 'some_other_date';
 
         $twilioRecordings = array($mockTwilioRecording, $mockTwilioRecording2);
-        $mockTwilioAccount->recordings = $twilioRecordings;
-        $mockTwilioService->account = $mockTwilioAccount;
+
+        $mockTwilioClient->recordings = Mockery::mock();
+        $mockTwilioClient->recordings
+            ->shouldReceive("read")
+            ->andReturn($twilioRecordings);
 
         $this->app->instance(
-            'Services_Twilio',
-            $mockTwilioService
+            \Twilio\Rest\Client::class,
+            $mockTwilioClient
         );
 
         // When
         $response = $this->call('GET', route('recording-index'));
         $recordingsJSON = json_decode($response->getContent());
+
         // Then
         $this->assertCount(2, $recordingsJSON);
         $this->assertEquals($recordingsJSON[0]->url, 'https://api.twilio.com/some/uri');
@@ -43,28 +44,28 @@ class RecordingControllerTest extends TestCase
         $this->startSession();
         $twilioNumber = config('services.twilio')['number'];
 
-        $mockTwilioService = Mockery::mock('Services_Twilio')
-                                ->makePartial();
-        $mockTwilioAccount = Mockery::mock();
-        $mockTwilioCalls = Mockery::mock();
-        $mockTwilioService->account = $mockTwilioAccount;
-        $mockTwilioAccount->calls = $mockTwilioCalls;
+        $mockTwilioClient = $this->getMockBuilder(\Twilio\Rest\Client::class)
+            ->getMock();
 
-        $mockTwilioCalls
+        $mockTwilioClient->calls = Mockery::mock();
+
+        $mockTwilioClient->calls
             ->shouldReceive('create')
             ->withAnyArgs();
 
         $this->app->instance(
-            'Services_Twilio',
-            $mockTwilioService
+            \Twilio\Rest\Client::class,
+            $mockTwilioClient
         );
 
         // When
         $response = $this->call(
             'POST',
             route('recording-create'),
-            ['phone_number' => '+123456',
-            '_token' => csrf_token()]
+            [
+                'phone_number' => '+123456',
+                '_token' => csrf_token()
+            ]
         );
 
         // Then
@@ -78,7 +79,9 @@ class RecordingControllerTest extends TestCase
         $recordResponse = $this->call(
             'POST',
             route('recording-record'),
-            ['_token' => csrf_token()]
+            [
+                '_token' => csrf_token()
+            ]
         );
         $recordDocument = new SimpleXMLElement($recordResponse->getContent());
 
