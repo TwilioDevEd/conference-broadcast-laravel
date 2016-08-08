@@ -1,41 +1,47 @@
 <?php
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
+
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
-use Services_Twilio as TwilioRestClient;
-use Services_Twilio_Twiml as TwilioTwiml;
+use Illuminate\Http\Request;
+use Twilio\Rest\Client;
+use Twilio\Twiml;
 
 class RecordingController extends Controller
 {
-    public function index(TwilioRestClient $client)
+    public function index(Client $twilioClient)
     {
         $baseUrl = '';
-        $recordings = array();
+        $responseRecordings = array();
 
-        foreach($client->account->recordings as $recording) {
+        $recordings = $twilioClient->recordings->read();
+
+        foreach ($recordings as $recording) {
+            $recordingUri = str_replace('.json', '', $recording->uri);
             $entry = array(
-                'url' => 'https://api.twilio.com' . $recording->uri,
-                'date' => $recording->date_created
+                'url' => 'https://api.twilio.com' . $recordingUri,
+                'date' => $recording->dateCreated->format('Y-m-d H:i:s')
             );
-            array_push($recordings, $entry);
+            array_push($responseRecordings, $entry);
         }
 
-        return response()->json($recordings);
+        return response()->json($responseRecordings);
     }
 
-    public function create(Request $request, TwilioRestClient $client)
+    public function create(Request $request, Client $client)
     {
         $destinationNumber = $request->input('phone_number');
         $twilioNumber = config('services.twilio')['number'];
 
+        // The URL Twilio will request when the call is answered
         $path = str_replace($request->path(), '', $request->url()) . 'recording/record';
 
         try {
-            $client->account->calls->create(
-                $twilioNumber, // The number of the phone initiating the call
+            $client->calls->create(
                 $destinationNumber, // The number of the phone receiving call
-                $path // The URL Twilio will request when the call is answered
+                $twilioNumber,      // The number of the phone initiating the call
+                [
+                    "url" => $path
+                ]
             );
         } catch (Exception $e) {
             return 'Error: ' . $e->getMessage();
@@ -45,10 +51,14 @@ class RecordingController extends Controller
 
     public function showRecord()
     {
-        $response = new TwilioTwiml;
+        $response = new Twiml();
         $response->say(
-            'Please record your message after the beep. Press star to end your recording.',
-            ['voice' => 'alice', 'language' => 'en-GB']
+            'Please record your message after the beep.' .
+            ' Press star to end your recording.',
+            [
+                'voice' => 'alice',
+                'language' => 'en-GB'
+            ]
         );
         $response->record(array(
             'action' => '/recording/hangup',
@@ -61,10 +71,13 @@ class RecordingController extends Controller
 
     public function showHangup()
     {
-        $response = new TwilioTwiml;
+        $response = new Twiml();
         $response->say(
             'Your recording has been saved. Good bye.',
-            ['voice' => 'alice', 'language' => 'en-GB']
+            [
+                'voice' => 'alice',
+                'language' => 'en-GB'
+            ]
         );
         $response->hangup();
 
