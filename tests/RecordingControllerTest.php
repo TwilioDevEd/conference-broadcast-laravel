@@ -9,18 +9,29 @@ class RecordingControllerTest extends TestCase
         $mockTwilioClient = $this->getMockBuilder(\Twilio\Rest\Client::class)
             ->getMock();
 
-        $mockTwilioRecording = new \StdClass();
-        $mockTwilioRecording->uri = 'some/uri';
-        $mockTwilioRecording->date_created = 'some_date';
-        $mockTwilioRecording2 = new \StdClass();
-        $mockTwilioRecording2->uri = 'some/other/uri';
-        $mockTwilioRecording2->date_created = 'some_other_date';
+        $mockRecordingDate = Mockery::mock();
+        $mockRecordingDate2 = Mockery::mock();
+        $mockTwilioRecording = Mockery::mock();
+        $mockTwilioRecording->uri = '/some/uri';
+        $mockTwilioRecording->dateCreated = $mockRecordingDate;
+        $mockTwilioRecording2 = Mockery::mock();
+        $mockTwilioRecording2->uri = '/some/other/uri';
+        $mockTwilioRecording2->dateCreated = $mockRecordingDate2;
 
         $twilioRecordings = array($mockTwilioRecording, $mockTwilioRecording2);
 
+        $mockRecordingDate
+            ->shouldReceive('format')
+            ->withAnyArgs()
+            ->andReturn('some_date');
+        $mockRecordingDate2
+            ->shouldReceive('format')
+            ->withAnyArgs()
+            ->andReturn('some_other_date');
+
         $mockTwilioClient->recordings = Mockery::mock();
         $mockTwilioClient->recordings
-            ->shouldReceive("read")
+            ->shouldReceive('read')
             ->andReturn($twilioRecordings);
 
         $this->app->instance(
@@ -34,8 +45,8 @@ class RecordingControllerTest extends TestCase
 
         // Then
         $this->assertCount(2, $recordingsJSON);
-        $this->assertEquals($recordingsJSON[0]->url, 'https://api.twilio.com/some/uri');
-        $this->assertEquals($recordingsJSON[1]->date, 'some_other_date');
+        $this->assertEquals('https://api.twilio.com/some/uri', $recordingsJSON[0]->url);
+        $this->assertEquals('some_other_date', $recordingsJSON[1]->date);
     }
 
     public function testCreate()
@@ -79,9 +90,7 @@ class RecordingControllerTest extends TestCase
         $recordResponse = $this->call(
             'POST',
             route('recording-record'),
-            [
-                '_token' => csrf_token()
-            ]
+            ['_token' => csrf_token()]
         );
         $recordDocument = new SimpleXMLElement($recordResponse->getContent());
 

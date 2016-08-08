@@ -16,9 +16,10 @@ class RecordingController extends Controller
         $recordings = $twilioClient->recordings->read();
 
         foreach ($recordings as $recording) {
+            $recordingUri = str_replace('.json', '', $recording->uri);
             $entry = array(
-                'url' => 'https://api.twilio.com/' . $recording->uri,
-                'date' => $recording->date_created
+                'url' => 'https://api.twilio.com' . $recordingUri,
+                'date' => $recording->dateCreated->format('Y-m-d H:i:s')
             );
             array_push($responseRecordings, $entry);
         }
