@@ -4,7 +4,8 @@
 
 # Rapid Response Kit: Building Conferencing and Broadcasting with Twilio.
 Level: Intermediate. Powered by Twilio - Laravel
-[![Build Status](https://travis-ci.org/TwilioDevEd/conference-broadcast-laravel.svg)](https://travis-ci.org/TwilioDevEd/conference-broadcast-laravel)
+
+![](https://github.com/TwilioDevEd/conference-broadcast-laravel/workflows/Laravel/badge.svg)
 
 > We are currently in the process of updating this sample template. If you are encountering any issues with the sample, please open an issue at [github.com/twilio-labs/code-exchange/issues](https://github.com/twilio-labs/code-exchange/issues) and we'll try to help you.
 
@@ -49,7 +50,7 @@ an organizer to instantly communicate with volunteers.
    this:
 
    ```
-   http://<your-ngrok-subdomain>.ngrok.io/conference/join
+   https://<your-ngrok-subdomain>.ngrok.io/conference/join
    ```
 
 1. Configure Twilio to call your webhooks
@@ -66,13 +67,13 @@ an organizer to instantly communicate with volunteers.
    Remember that the number where you change the voice webhooks must be
    the same one you set on the `TWILIO_RR_NUMBER` environment variable.
 
-   ![Configure Voice](http://howtodocs.s3.amazonaws.com/twilio-number-config-all-med.gif)
+   ![Configure Voice](https://twilio-cms-prod.s3.amazonaws.com/images/twilio_console_for_conference_broadcast.width-1600.png)
 
    For this application, you must set the voice webhook of your number to
    something like this:
 
    ```
-   http://<your-ngrok-subdomain>.ngrok.io/conference/join
+   https://<your-ngrok-subdomain>.ngrok.io/conference/join
    ```
    And in this case set the `GET` method on the configuration for this
    webhook.
@@ -83,21 +84,27 @@ an organizer to instantly communicate with volunteers.
    $ php artisan serve
    ```
 
-  It is `artisan serve` default behaviour to use `http://localhost:8000`
-  when
-  the application is run. This means that the ip addresses where your
-  app will be reachable on you local machine will vary depending on the
-  operating system.
+   It is `artisan serve` default behaviour to use `http://localhost:8000`
+   when
+   the application is run. This means that the ip addresses where your
+   app will be reachable on you local machine will vary depending on the
+   operating system.
 
-  The most common scenario, is that your app will be reachable through
-  address `http://127.0.0.1:8000`, and this is important because ngrok
-  creates the tunnel using only that address. So, if `http://127.0.0.1:8000`
-  is not reachable in your local machine when you run the app, you must
-  tell artisan to use this address, like this:
+   The most common scenario, is that your app will be reachable through
+   address `http://127.0.0.1:8000`, and this is important because ngrok
+   creates the tunnel using only that address. So, if `http://127.0.0.1:8000`
+   is not reachable in your local machine when you run the app, you must
+   tell artisan to use this address, like this:
 
-  ```bash
-  $ php artisan serve --host=127.0.0.1
-  ```
+   ```bash
+   $ php artisan serve --host=127.0.0.1
+   ```
+
+   Try your application by going to:
+
+   ```
+   https://<your-ngrok-subdomain>.ngrok.io/
+   ```
 
 ### Dependencies
 
@@ -109,9 +116,16 @@ This application uses this Twilio helper library:
 1. Run at the top-level directory:
 
    ```bash
-   $ phpunit
+   $ vendor/bin/phpunit
    ```
 
    If you don't have phpunit installed on your system, you can follow [this
    instructions](https://phpunit.de/manual/current/en/installation.html) to
    install it.
+
+## Meta
+
+* No warranty expressed or implied.  Software is as is. Diggity.
+* The CodeExchange repository can be found [here](https://github.com/twilio-labs/code-exchange/).
+* [MIT License](http://www.opensource.org/licenses/mit-license.html)
+* Lovingly crafted by Twilio Developer Education.

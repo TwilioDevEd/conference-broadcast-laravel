@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Twilio\Twiml;
+use Twilio\TwiML\VoiceResponse;
 
 class ConferenceController extends Controller
 {
@@ -20,7 +20,7 @@ class ConferenceController extends Controller
      */
     public function showJoin()
     {
-        $response = new Twiml();
+        $response = new VoiceResponse();
         $response->say(
             'You are about to join the Rapid Response conference.',
             [
@@ -59,7 +59,7 @@ class ConferenceController extends Controller
             $moderator = true;
         }
 
-        $response = new Twiml();
+        $response = new VoiceResponse();
         $response->say(
             'You have joined the conference.',
             [

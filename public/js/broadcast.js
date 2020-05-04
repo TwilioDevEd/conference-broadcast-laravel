@@ -21,12 +21,14 @@ $(function() {
   };
 
   showRecordings = function(recordings) {
-    var newestRecording;
-    newestRecording = new Date(recordings[0]['date']);
-
-    if (newestRecording > lastRecording) {
-      lastRecording = newestRecording;
-      return populateSelect(recordings);
+    if (recordings.length > 0) {
+      var newestRecording;
+      newestRecording = new Date(recordings[0]['date']);
+  
+      if (newestRecording > lastRecording) {
+        lastRecording = newestRecording;
+        return populateSelect(recordings);
+      }
     }
   };
 

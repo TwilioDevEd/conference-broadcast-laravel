@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
-use Twilio\Twiml;
+use Twilio\TwiML\VoiceResponse;
 
 class RecordingController extends Controller
 {
@@ -51,7 +51,7 @@ class RecordingController extends Controller
 
     public function showRecord()
     {
-        $response = new Twiml();
+        $response = new VoiceResponse();
         $response->say(
             'Please record your message after the beep.' .
             ' Press star to end your recording.',
@@ -71,7 +71,7 @@ class RecordingController extends Controller
 
     public function showHangup()
     {
-        $response = new Twiml();
+        $response = new VoiceResponse();
         $response->say(
             'Your recording has been saved. Good bye.',
             [
