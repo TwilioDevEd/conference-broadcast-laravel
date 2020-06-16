@@ -13,7 +13,8 @@
 
 //Home related routes
 Route::get(
-    '/', ['as' => 'home', function () {
+    '/',
+    ['as' => 'home', function () {
         return response()->view('index');
     }]
 );

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use Twilio\Rest\Client;
-use Twilio\Twiml;
+use Twilio\TwiML\VoiceResponse;
 
 class BroadcastController extends Controller
 {
@@ -47,7 +47,7 @@ class BroadcastController extends Controller
     public function showPlay(Request $request)
     {
         $recordingUrl = $request->input('recording_url');
-        $response = new Twiml();
+        $response = new VoiceResponse();
         $response->play($recordingUrl);
 
         return response($response)->header('Content-Type', 'application/xml');
