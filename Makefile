@@ -1,3 +1,5 @@
+.PHONY: install serve
+
 install:
 	composer install
 	php artisan key:generate --force
