@@ -3844,23 +3844,23 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "6.4.0",
+            "version": "6.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "50f51c445684b81d1b67ecdaaaf1d59a1654bac9"
+                "reference": "d4a5ad22e761a14c5e355debb88a6f17640b247c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/50f51c445684b81d1b67ecdaaaf1d59a1654bac9",
-                "reference": "50f51c445684b81d1b67ecdaaaf1d59a1654bac9",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/d4a5ad22e761a14c5e355debb88a6f17640b247c",
+                "reference": "d4a5ad22e761a14c5e355debb88a6f17640b247c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1.0"
             },
             "require-dev": {
-                "guzzlehttp/guzzle": "^6.3",
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
                 "phpunit/phpunit": ">=4.5",
                 "theseer/phpdox": "^0.12.0"
             },
@@ -3890,7 +3890,11 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2020-04-29T20:03:50+00:00"
+            "support": {
+                "issues": "https://github.com/twilio/twilio-php/issues",
+                "source": "https://github.com/twilio/twilio-php/tree/6.32.0"
+            },
+            "time": "2021-12-15T20:48:09+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -5925,5 +5929,5 @@
         "php": "^7.2.5"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
