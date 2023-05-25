@@ -7,7 +7,7 @@
     "require": {
         "php": "^7.2.5",
         "laravel/framework": "^7.2",
-        "twilio/sdk": "^6.1.0",
+        "twilio/sdk": "^7.4.1",
         "laravelcollective/html": "^6.1"
     },
     "require-dev": {
