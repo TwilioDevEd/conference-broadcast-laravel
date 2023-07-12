@@ -24,7 +24,7 @@ class ConferenceController extends Controller
         $response->say(
             'You are about to join the Rapid Response conference.',
             [
-                'voice' => 'alice',
+                'voice' => 'Polly.Amy',
                 'language' => 'en-GB'
             ]
         );
@@ -63,7 +63,7 @@ class ConferenceController extends Controller
         $response->say(
             'You have joined the conference.',
             [
-                'voice' => 'alice',
+                'voice' => 'Polly.Amy',
                 'language' => 'en-GB'
             ]
         );

@@ -56,7 +56,7 @@ class RecordingController extends Controller
             'Please record your message after the beep.' .
             ' Press star to end your recording.',
             [
-                'voice' => 'alice',
+                'voice' => 'Polly.Amy',
                 'language' => 'en-GB'
             ]
         );
@@ -75,7 +75,7 @@ class RecordingController extends Controller
         $response->say(
             'Your recording has been saved. Good bye.',
             [
-                'voice' => 'alice',
+                'voice' => 'Polly.Amy',
                 'language' => 'en-GB'
             ]
         );
